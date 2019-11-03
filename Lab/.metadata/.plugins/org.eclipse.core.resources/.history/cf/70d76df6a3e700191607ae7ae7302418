@@ -1,0 +1,32 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+	
+	public static void main(String[] args)throws Exception
+	{
+		System.out.println(Main.randomOS());
+	}
+	
+	public static int randomOS(int u)throws Exception
+	{
+		int count=0;
+		File file = new File("random-numbers.txt"); 
+	    Scanner sc = new Scanner(file);
+	    while(sc.hasNext())
+	    {
+	    	sc.next();
+	    	count++;
+	    }
+	    int[] numbers=new int[count];
+	    sc = new Scanner(file);
+	    int i=0;
+	    while(i<count)
+	    {
+	    	numbers[i]=sc.nextInt();
+	    	i++;
+	    }
+	    Random generator = new Random();
+	    return 1+(numbers[generator.nextInt(numbers.length)] % u);
+	}
+
+}

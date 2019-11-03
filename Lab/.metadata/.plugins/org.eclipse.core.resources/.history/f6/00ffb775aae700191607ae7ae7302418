@@ -1,0 +1,12 @@
+
+public class Process implements Comparable {
+	int a;//arrival time
+	int c;//Total CPU time
+	int b;//next CPU burst time
+	int m;//next I/O time
+	
+	public boolean compareTo(Object o) {
+		return (this.a<o.a);
+	}
+
+}

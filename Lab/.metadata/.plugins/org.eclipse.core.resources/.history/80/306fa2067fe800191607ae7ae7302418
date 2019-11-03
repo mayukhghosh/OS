@@ -1,0 +1,171 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+	static Process[] processes;
+	public static Process prc;//Current running process
+	static int glob_time=0;
+	static int cpu_time=0;
+	static int io_time=0;
+	public static void main(String[] args)throws Exception
+	{
+		//Main.input_parse_process("input-5.txt");
+	}
+	
+		
+	
+	public static void scheduler()throws Exception
+	{
+		int cycle=0;
+
+
+		while(true)
+		{
+			blockedProcesses(cycle,cpu_time,io_time);
+			runningProcesses(cycle,cpu_time,io_time);
+			arrivingProcesses(cycle,cpu_time,io_time);
+			readyProcesses(cycle,cpu_time,io_time);
+			cycle++;
+			glob_time++;
+		}
+		
+	}
+	
+	public static void blockedProcesses(int cycle,int cpu_time,int io_time)
+	{;
+		for(int i=0;i<processes.length;i++)
+		{
+			if(processes[i].state.equals("blocked") && processes[i].blocked_burst!=0)
+			{
+				processes[i].blocked_burst--;
+				processes[i].io_time++;
+				io_time--;
+			}
+			if(processes[i].state.equals("blocked") && processes[i].blocked_burst==0)
+			{
+				processes[i].state="ready";
+			}
+			
+		}
+	}
+	
+	public static void runningProcesses(int cycle,int cpu_time,int io_time)throws Exception
+	{
+		for(int i=0;i<processes.length;i++)
+		{
+			if(processes[i].state.equals("running"))
+			{
+				FCFS.run(prc);
+				cpu_time--;
+				if(prc.c==0)
+					prc.state="terminated";
+				if(cpu_time==0 && prc.c!=0)
+				{
+					prc.state="blocked";
+				}
+				break;
+			}
+			
+		}
+		
+	}
+	
+	public static void arrivingProcesses(int cycle,int cpu_time,int io_time)
+	{
+		for(int i=0;i<processes.length;i++)
+		{
+			if(processes[i].state.equals("unstarted"))
+			{
+				if(glob_time==processes[i].a)
+				{
+					processes[i].state="ready";
+				}
+			}
+		}
+	}
+	
+	public static void readyProcesses(int cycle,int cpu_time,int io_time)throws Exception
+	{
+		
+		for(int i=0;i<processes.length;i++)
+		{
+			if(processes[i].state.equals("ready"))
+			{
+					FCFS.enqueue(processes[i]);	
+			}
+		}
+		int flag=0;
+		for(int j=0;j<processes.length;j++)//check if any process is running
+		{
+			if(processes[j].state.equals("running"))
+			{
+				flag=1;
+				break;
+			}
+		}
+		
+		if(flag==0)
+		{
+			prc=FCFS.dequeue();
+			cpu_time=randomOS(prc.b);
+			io_time=cpu_time*prc.m;
+			prc.io_time=prc.io_time+io_time;
+			prc.blocked_burst=io_time;
+			prc.state="running";
+			flag=1;
+		}
+		for(int i=0;i<processes.length;i++)
+		{
+			if(processes[i].state.equals("ready") && flag==1)
+			{
+				processes[i].wait_time++;
+			}
+		}
+	
+	}
+	
+	public static int randomOS(int b)throws Exception
+	{
+		int count=0;
+		File file = new File("random-numbers.txt"); 
+	    Scanner sc = new Scanner(file);
+	    while(sc.hasNext())
+	    {
+	    	sc.next();
+	    	count++;
+	    }
+	    int[] numbers=new int[count];
+	    sc = new Scanner(file);
+	    int i=0;
+	    while(i<count)
+	    {
+	    	numbers[i]=sc.nextInt();
+	    	i++;
+	    }
+	    Random generator = new Random();
+	    return 1+(numbers[generator.nextInt(numbers.length)] % b);
+	}
+
+	public static void input_parse_process(String str_file)throws Exception
+	{
+		File file = new File(str_file); 
+	    Scanner sc = new Scanner(file);
+	    //String input=sc.nextLine();
+	    int n=sc.nextInt();
+	    processes=new Process[n];
+	    for(int i=0;i<n;i++)
+	    {
+	    	int a=sc.nextInt();
+	    	int c=sc.nextInt();
+	    	int b=sc.nextInt();
+	    	int m=sc.nextInt();
+	    	processes[i]=new Process(a,c,b,m);
+	    }
+	    Arrays.sort(processes);
+	    /*for(int i=0;i<n;i++)
+	    {
+	    	if(processes[i].a==0)
+	    		q.add(processes[i]);
+	    }*/
+	    //System.out.println(Arrays.toString(processes));
+	}
+}

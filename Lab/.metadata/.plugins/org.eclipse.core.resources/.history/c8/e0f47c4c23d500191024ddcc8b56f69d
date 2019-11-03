@@ -1,0 +1,86 @@
+import java.io.*;
+import java.util.*;
+
+public class link_implement {
+	static int num;
+	static int[] base;
+	static Dictionary sym=new Hashtable();
+	public static void main(String[] args)throws Exception {
+		
+		String text=input_1();
+		base=new int[num];
+		pass_1(text);
+
+	}
+	
+	public static void input()
+	{
+		String text="";int count=0;num=0;
+		Scanner sc=new Scanner(new InputStreamReader(System.in));
+		System.out.println("Input:");
+		while(sc.hasNext())
+		{
+			if(count==0)
+			{
+				num=sc.nextInt();
+
+				count++;
+				continue;
+			}
+			String line=sc.nextLine();
+			//System.out.println("*****"+line);
+			text=text+line+'\n';
+			count++;
+			if((num*3)+1==(count))
+			{
+				break;
+			}
+		}		
+		System.out.println("----------");
+		System.out.println(text);
+		sc.close();
+	}
+	
+	public static String input_1()throws Exception
+	{
+		String text="";int count=0;num=0;
+		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		String line;
+		while (true)
+		{
+			line=input.readLine();
+			if(line.equals(""))
+				continue;
+			if(line.charAt(0)==' ')
+			{
+				line=line.substring(1,line.length());
+			}
+			if(count==0)
+			{
+				num=Integer.parseInt(line.substring(0,1));
+				count++;
+				continue;
+			}
+			//System.out.println("*****"+line);
+			text=text+line+'\n';
+			count++;
+			if((num*3)+1==(count))
+			{
+				break;
+			}
+		}		
+		System.out.println("----------");
+		System.out.println(text);
+		return text;
+	}
+	
+	public static void pass_1(String text)
+	{
+		Scanner sc=new Scanner(text);
+		while(sc.hasNextLine())
+		{
+			System.out.println(sc.nextLine());
+		}
+	}
+
+}

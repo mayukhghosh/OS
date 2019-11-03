@@ -1,0 +1,47 @@
+import java.io.BufferedInputStream;
+import java.util.Scanner;
+
+public class link_implement {
+	static int num;
+
+	public static void main(String[] args) {
+		
+		input();
+
+	}
+	
+	public static void input()
+	{
+		String text="";int count=0;num=0;
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Input:");
+		while(sc.hasNext())
+		{
+			if(count==0)
+			{
+				num=sc.nextInt();
+
+				count++;
+				continue;
+			}
+			String line=sc.nextLine();
+			//System.out.println("*****"+line);
+			text=text+line;
+			count++;
+			if((num*3)+1==(count))
+			{
+				break;
+			}
+		}		
+		System.out.println("----------");
+		System.out.println(text);
+		sc.close();
+	}
+	
+	public void pass_1(String text)
+	{
+		Scanner sc=new Scanner(text);
+		
+	}
+
+}

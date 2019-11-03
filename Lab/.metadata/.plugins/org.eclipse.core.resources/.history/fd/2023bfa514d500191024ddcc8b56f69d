@@ -1,0 +1,22 @@
+import java.util.Scanner;
+
+public class link_implement {
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Input:");
+		String text=sc.next();
+		System.out.println("----------");
+		System.out.println(text);
+		sc.close();
+		
+
+	}
+	
+	public void pass_1(String text)
+	{
+		Scanner sc=new Scanner(text);
+		
+	}
+
+}

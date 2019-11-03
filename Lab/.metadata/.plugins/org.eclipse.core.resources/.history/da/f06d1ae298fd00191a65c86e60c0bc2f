@@ -1,0 +1,24 @@
+import java.util.*;
+
+public class Process {
+	ArrayList<String> inst=new ArrayList<String>();
+	HashMap<Integer, Integer> claim = new HashMap<>();
+	HashMap<Integer, Integer> hold = new HashMap<>();
+	
+	//releasing n-resources where res is type of resource
+	public void release_res(int res, int n)
+	{
+		int curr=hold.get(res);
+		hold.put(res, curr-n);
+		if(curr-n==0)
+		{
+			hold.remove(res);
+		}
+	}
+	
+	public void request_res()
+	{
+		
+	}
+
+}

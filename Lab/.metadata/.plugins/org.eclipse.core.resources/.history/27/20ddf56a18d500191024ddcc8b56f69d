@@ -1,0 +1,27 @@
+import java.io.BufferedInputStream;
+import java.util.Scanner;
+
+public class link_implement {
+
+	public static void main(String[] args) {
+		String text="";
+		Scanner sc=new Scanner(new BufferedInputStream(System.in));
+		System.out.println("Input:");
+		while(sc.hasNext())
+		{
+			text=text+sc.nextLine()+"\n";
+		}		
+		System.out.println("----------");
+		System.out.println(text);
+		sc.close();
+		
+
+	}
+	
+	public void pass_1(String text)
+	{
+		Scanner sc=new Scanner(text);
+		
+	}
+
+}

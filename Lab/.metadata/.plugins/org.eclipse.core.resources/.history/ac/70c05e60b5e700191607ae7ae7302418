@@ -1,0 +1,86 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+	static Process[] processes;
+	static Queue<Process> q=new LinkedList<>();
+	static int glob_time=0;
+	public static void main(String[] args)throws Exception
+	{
+		//Main.input_parse_process("input-5.txt");
+	}
+	
+	
+	
+	
+	public static void scheduler()
+	{
+		int cycle=0;
+		int cpu_time;
+		int io_time;
+		while(true)
+		{
+			runningProcesses(cycle,cpu_time,io_time);
+			cycle++;
+		}
+		
+	}
+	
+	public static void blockedProcesses()
+	{
+		
+	}
+	
+	public static void runningProcesses(int cycle,int cpu_time,int io_time)
+	{
+		if(cycle==0)
+		{
+			Process prc=q.remove();
+			cpu_time=randomOS(prc.b);
+		}
+	}
+	
+	public static int randomOS(int b)throws Exception
+	{
+		int count=0;
+		File file = new File("random-numbers.txt"); 
+	    Scanner sc = new Scanner(file);
+	    while(sc.hasNext())
+	    {
+	    	sc.next();
+	    	count++;
+	    }
+	    int[] numbers=new int[count];
+	    sc = new Scanner(file);
+	    int i=0;
+	    while(i<count)
+	    {
+	    	numbers[i]=sc.nextInt();
+	    	i++;
+	    }
+	    Random generator = new Random();
+	    return 1+(numbers[generator.nextInt(numbers.length)] % b);
+	}
+
+	public static void input_parse_process(String str_file)throws Exception
+	{
+		File file = new File(str_file); 
+	    Scanner sc = new Scanner(file);
+	    //String input=sc.nextLine();
+	    int n=sc.nextInt();
+	    processes=new Process[n];
+	    for(int i=0;i<n;i++)
+	    {
+	    	int a=sc.nextInt();
+	    	int c=sc.nextInt();
+	    	int b=sc.nextInt();
+	    	int m=sc.nextInt();
+	    	processes[i]=new Process(a,c,b,m);
+	    }
+	    Arrays.sort(processes);
+	    for(int i=0;i<n;i++)
+	    {
+	    	q.add(processes[i]);
+	    }
+	    //System.out.println(Arrays.toString(processes));
+	}
+}

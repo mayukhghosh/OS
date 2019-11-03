@@ -1,0 +1,10 @@
+
+public class FCFS {
+	
+	public void run(Process prc)
+	{
+		prc.c--;
+		Main.glob_time++;
+	}
+
+}

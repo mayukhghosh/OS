@@ -1,0 +1,9 @@
+
+public class FCFS {
+	
+	public static void run(Process prc)
+	{
+		prc.c--;
+	}
+
+}
