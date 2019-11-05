@@ -1,0 +1,73 @@
+import java.util.*;
+
+public class optimistic {
+	static Queue<Process> blocked_processes=new LinkedList<Process>();
+	static HashMap<Integer,Integer> just_blocked;
+	public static void run()
+	{
+		int blocked_flag=0;
+		while(true)
+		{
+			just_blocked=new HashMap<>();
+			blocked_flag=0;
+			//run blocked tasks first
+			while(blocked_processes.size()!=0)
+			{
+				Process prc=blocked_processes.poll();
+				prc.parse_inst();
+				if(prc.blocked==true)
+					blocked_processes.add(prc);
+				just_blocked.put(prc.id,0);	
+			}
+			//run tasks which were not blocked
+			for(int i=0;i<Main.list.size();i++)
+			{
+				if(Main.list.get(i).terminated==false && just_blocked.containsKey(Main.list.get(i).id)==false)
+				{
+					Main.list.get(i).parse_inst();
+					if(Main.list.get(i).blocked==true)
+					{
+						blocked_processes.add(Main.list.get(i));
+					}
+				}
+			}
+			
+			
+			//check if every process is blocked
+			for(int i=0;i<Main.list.size();i++)
+			{
+				if(Main.list.get(i).terminated==false && Main.list.get(i).blocked==true)
+				{
+					blocked_flag++;
+				}
+			}
+			if(blocked_flag==Main.list.size())
+			{
+				check_abort();
+			}
+		}
+	}
+	
+	public void check_abort()
+	{
+		int flag=0;
+		for(int i=0;i<Main.list.size();i++)
+		{
+			Main.list.get(i).release_all();
+			Main.list.get(i).aborted=true;
+			Main.list.get(i).terminated=true;
+			Main.list.get(i).blocked=false;
+			for(int j=i+1;j<Main.list.size();j++)
+			{
+				if(Main.avl[0]>=Main.list.get(j).get_req_res())
+				{
+					flag=1;
+					break;
+				}
+			}
+			if(flag==1)
+				break;
+		}
+	}
+
+}
