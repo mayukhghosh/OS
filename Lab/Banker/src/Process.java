@@ -1,7 +1,8 @@
 import java.util.*;
-
+//
 public class Process {
-	Queue<String> inst=new LinkedList<String>();
+	Queue<String> inst=new LinkedList<String>();//instructions for a task is stored which is executed in a FIFO manner
+	Queue<String> comp=new LinkedList<String>();//Storing 'compute' instruction
 	int id;
 	int[] claim;
 	int[] alloc;
@@ -26,14 +27,16 @@ public class Process {
 	{
 		alloc[res]=alloc[res]-n;
 		need[res]=need[res]+n;
-		Main.avl[res]=Main.avl[res]+n;
+		//Main.avl[res]=Main.avl[res]+n;
+		Main.temp[res]=Main.temp[res]+n;
 	}
 	//releasing all resouorces
 	public void release_all()
 	{
 		for(int i=0;i<alloc.length;i++)
 		{
-			Main.avl[i]=Main.avl[i]+alloc[i];
+			//Main.avl[i]=Main.avl[i]+alloc[i];
+			Main.temp[i]=Main.temp[i]+alloc[i];
 			alloc[i]=0;
 		}
 	}
@@ -72,7 +75,7 @@ public class Process {
 		}
 		else//block it
 		{
-			System.out.println("Blocked: "+this.id);
+			//System.out.println("Blocked: "+this.id);
 			blocked=true;
 			this.wait++;
 		}
@@ -86,7 +89,7 @@ public class Process {
 			terminated=true;
 			aborted=true;
 			blocked=false;
-			System.out.println("Aborted: "+this.id);
+			//System.out.println("Aborted: "+this.id);
 			release_all();
 			return;
 		}
@@ -106,27 +109,39 @@ public class Process {
 		}*/
 		else//block it
 		{
-			System.out.println("Blocked: "+this.id);
+			//System.out.println("Blocked: "+this.id);
 			blocked=true;
 			this.wait++;
 		}
 	}
-	
+	//compute function 
 	public void compute(int process, int cycles)
 	{
-		this.total=this.total+cycles;
+		if(comp.isEmpty()==false)
+		{
+			comp.poll();
+		}
+		else
+		{
+			for(int i=0;i<cycles-1;i++)
+			{
+				comp.add("compute  "+process+" "+"0"+" 0");
+			}
+		}
+		if(comp.isEmpty())
+			inst.poll();
 	}
 	
 	public void terminate()
 	{
 		terminated=true;
 	}
-	
+	// parsing instructions in the 'inst' queue
 	public String parse_inst(boolean bankers)
 	{
 		this.total++;
 		String line=inst.peek();
-		System.out.println(line);
+		//System.out.println(line);
 		//System.out.println(Arrays.toString(line.split("\\s+")));
 		String activity=line.split("\\s+")[0];
 		int process=Integer.parseInt(line.split("\\s+")[1]);
@@ -161,7 +176,6 @@ public class Process {
 		if(activity.equals("compute"))
 		{
 			compute(process,resource);
-			inst.poll();
 			return this.id+" "+resource;
 		}
 		if(activity.equals("terminate"))

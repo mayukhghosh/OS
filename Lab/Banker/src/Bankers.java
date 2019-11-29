@@ -4,15 +4,20 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Bankers {
-	static Queue<Process> blocked_processes=new LinkedList<Process>();
+	static Queue<Process> blocked_processes=new LinkedList<Process>();//storing blocked processes so that it is processed first
 	static Queue<Process> temp=new LinkedList<Process>();
 	static HashMap<Integer,Integer> just_blocked;
+	static int cycle=0;
 	public static void run()
 	{
+		
 		int blocked_flag=0;
 		int terminated_flag=0;
 		while(true)
 		{
+			//System.out.println(cycle);
+			cycle++;
+			Main.temp=new int[Main.avl.length];
 			just_blocked=new HashMap<>();
 			blocked_flag=0;
 			terminated_flag=0;
@@ -30,7 +35,7 @@ public class Bankers {
 				}
 				if(compute.equals("")==false)
 				{
-					increase_wait_time(compute);
+					//increase_wait_time(compute);
 				}
 				just_blocked.put(prc.id,0);	
 			}
@@ -51,7 +56,7 @@ public class Bankers {
 					}
 					if(compute.equals("")==false)
 					{
-						increase_wait_time(compute);
+						//increase_wait_time(compute);
 					}
 				}
 			}			
@@ -69,8 +74,15 @@ public class Bankers {
 			{
 				break;
 			}
+			//making resources available in the next cycle
+			for(int i=0;i<Main.avl.length;i++)
+			{
+				Main.avl[i]=Main.avl[i]+Main.temp[i];
+			}
+			//System.out.println("-------");
 		}
-
+		
+		//printing statistics
 		int total_wait=0;
 		int total_time=0;
 		System.out.println("BANKER'S");
@@ -84,25 +96,16 @@ public class Bankers {
 			{
 				total_wait=total_wait+Main.list.get(i).wait;
 				total_time=total_time+Main.list.get(i).total;
-				double wait_ratio=(double)(Main.list.get(i).wait)/(double)(Main.list.get(i).total)*100;
+				double wait_ratio=Math.ceil(((double)(Main.list.get(i).wait)/(double)(Main.list.get(i).total)*100));
 				System.out.println("Task "+Main.list.get(i).id+"\t"+Main.list.get(i).total+"\t"+Main.list.get(i).wait+"\t"+wait_ratio+"%");
 			}
 		}
-		double total_wait_ratio=(double)total_wait/(double)total_time*100;
+		double total_wait_ratio=Math.ceil(((double)total_wait/(double)total_time*100));
 		System.out.println("total "+"\t"+total_time+"\t"+total_wait+"\t"+total_wait_ratio+"%");
 
 	}
 
-	public static void increase_wait_time(String id_cycles)
-	{
-		for(int i=0;i<Main.list.size();i++)
-		{
-			if(Main.list.get(i).id!=Integer.parseInt(id_cycles.split(" ")[0]))
-			{
-				Main.list.get(i).wait=Main.list.get(i).wait+Integer.parseInt(id_cycles.split(" ")[1]);
-			}
-		}
-	}
+	
 
 }
 

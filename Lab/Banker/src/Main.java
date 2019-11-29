@@ -3,14 +3,18 @@ import java.util.*;
 
 public class Main {
 	
-	static int cycle=0;
 	static int[] avl;
-	static ArrayList<Process> list=new ArrayList<Process>();
+	static int[] temp;
+	static ArrayList<Process> list;
 	public static void main(String[] args)throws Exception
 	{
-		input("input-13");
+		String input_file="input-07";
+		list=new ArrayList<Process>();
+		input(input_file);
 		optimistic.run();
-		//Bankers.run();
+		list=new ArrayList<Process>();
+		input(input_file);
+		Bankers.run();
 	}
 	
 	public static void input(String str_file)throws Exception

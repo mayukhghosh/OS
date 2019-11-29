@@ -1,7 +1,7 @@
 import java.util.*;
-
+//Logic for the optimistic algorithm
 public class optimistic {
-	static Queue<Process> blocked_processes=new LinkedList<Process>();
+	static Queue<Process> blocked_processes=new LinkedList<Process>();//storing blocked processes so that it is processed first
 	static Queue<Process> temp=new LinkedList<Process>();
 	static HashMap<Integer,Integer> just_blocked;
 	public static void run()
@@ -10,6 +10,7 @@ public class optimistic {
 		int terminated_flag=0;
 		while(true)
 		{
+			Main.temp=new int[Main.avl.length];
 			just_blocked=new HashMap<>();
 			blocked_flag=0;
 			terminated_flag=0;
@@ -27,7 +28,7 @@ public class optimistic {
 				}
 				if(compute.equals("")==false)
 				{
-					increase_wait_time(compute);
+					//increase_wait_time(compute);
 				}
 				just_blocked.put(prc.id,0);	
 			}
@@ -48,10 +49,15 @@ public class optimistic {
 					}
 					if(compute.equals("")==false)
 					{
-						increase_wait_time(compute);
+						//increase_wait_time(compute);
 					}
 				}
-			}			
+			}
+			//make resources available next cycle
+			for(int i=0;i<Main.avl.length;i++)
+			{
+				Main.avl[i]=Main.avl[i]+Main.temp[i];
+			}
 			//check if every process is blocked
 			for(int i=0;i<Main.list.size();i++)
 			{
@@ -60,9 +66,10 @@ public class optimistic {
 					blocked_flag++;
 				}
 			}
+			//abort some tasks
 			if(blocked_flag==Main.list.size())
 			{
-				check_abort_multiple();
+				check_abort_multiple1();
 			}
 
 			//check if every process is terminated
@@ -77,6 +84,8 @@ public class optimistic {
 			{
 				break;
 			}
+			
+			//System.out.println("-------------");
 		}
 
 		int total_wait=0;
@@ -92,12 +101,13 @@ public class optimistic {
 			{
 				total_wait=total_wait+Main.list.get(i).wait;
 				total_time=total_time+Main.list.get(i).total;
-				double wait_ratio=(double)(Main.list.get(i).wait)/(double)(Main.list.get(i).total)*100;
+				double wait_ratio=Math.ceil(((double)(Main.list.get(i).wait)/(double)(Main.list.get(i).total)*100));
 				System.out.println("Task "+Main.list.get(i).id+"\t"+Main.list.get(i).total+"\t"+Main.list.get(i).wait+"\t"+wait_ratio+"%");
 			}
 		}
-		double total_wait_ratio=(double)total_wait/(double)total_time*100;
+		double total_wait_ratio=Math.ceil(((double)total_wait/(double)total_time*100));
 		System.out.println("total "+"\t"+total_time+"\t"+total_wait+"\t"+total_wait_ratio+"%");
+		System.out.println();
 
 	}
 
@@ -124,25 +134,32 @@ public class optimistic {
 		}
 	}
 
-	public static void check_abort_multiple()
+	
+	public static void check_abort_multiple1()
 	{
 		int flag=0;
 		for(int i=0;i<Main.list.size();i++)
 		{
-			System.out.println("---------");
-			Main.list.get(i).release_all();
+			//System.out.println("---------");
+			for(int p=0;p<Main.list.get(i).alloc.length;p++)
+			{
+				Main.avl[p]=Main.avl[p]+Main.list.get(i).alloc[p];
+				Main.list.get(i).alloc[p]=0;
+			}
 			Main.list.get(i).aborted=true;
 			Main.list.get(i).terminated=true;
 			Main.list.get(i).blocked=false;
+			//System.out.println("Aborted: "+Main.list.get(i).id);
 			for(int j=i+1;j<Main.list.size();j++)
 			{
 				for(int k=0;k<Main.avl.length;k++)
 				{
-					if(Main.avl[k]>=Main.list.get(j).get_req_res(k))
+					if(Main.avl[k]<Main.list.get(j).get_req_res(k))
 					{
-						flag=1;
 						break;
 					}
+					else
+						flag=1;
 				}
 				if(flag==1)
 					break;
@@ -151,15 +168,5 @@ public class optimistic {
 				break;
 		}
 
-	}
-	public static void increase_wait_time(String id_cycles)
-	{
-		for(int i=0;i<Main.list.size();i++)
-		{
-			if(Main.list.get(i).id!=Integer.parseInt(id_cycles.split(" ")[0]))
-			{
-				Main.list.get(i).wait=Main.list.get(i).wait+Integer.parseInt(id_cycles.split(" ")[1]);
-			}
-		}
 	}
 }
