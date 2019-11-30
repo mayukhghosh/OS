@@ -6,12 +6,17 @@ public class Process {
 	int next_ref_w=-1;
 	int time=0;
 	int evictions=0;
-	int loaded=0;
-	public Process(double a,double b, double c)
+	int eviction_time=0;
+	int loaded_time=0;
+	int max_num_references;
+	int residency_time=0;
+	boolean terminated=false;
+	public Process(double a,double b, double c,int max_num_references)
 	{
 		this.a=a;
 		this.b=b;
 		this.c=c;
+		this.max_num_references=max_num_references;
 	}
 
 }
