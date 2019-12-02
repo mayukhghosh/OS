@@ -4,6 +4,7 @@ public class Process {
 	double b;
 	double c;
 	int next_ref_w=-1;
+	int faults=0;
 	int time=0;
 	int evictions=0;
 	int eviction_time=0;
@@ -17,6 +18,11 @@ public class Process {
 		this.b=b;
 		this.c=c;
 		this.max_num_references=max_num_references;
+	}
+	
+	public void display()
+	{
+		System.out.println(a+" "+b+" "+c);
 	}
 
 }
