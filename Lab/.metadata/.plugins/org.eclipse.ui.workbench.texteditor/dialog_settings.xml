@@ -2,18 +2,18 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="aborted" key="selection"/>
+		<item value="process_num" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="process_num"/>
+			<item value="Main.frame_table[index].process_num-1"/>
 			<item value="aborted"/>
 			<item value="Blocked"/>
 			<item value="calc"/>
 			<item value="System.out"/>
 			<item value="enqu"/>
 			<item value="SJF.enqueue"/>
-			<item value="SJF.enqu"/>
-			<item value="io_time"/>
 		</list>
 		<list key="replacehistory">
 		</list>

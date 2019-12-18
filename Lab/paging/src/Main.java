@@ -35,7 +35,7 @@ public class Main {
 			random_numbers[i]=sc.nextInt();
 			i++;
 		}
-		System.out.println(m+" "+p+" "+s+" "+j+" "+n+" "+r);
+		//System.out.println(m+" "+p+" "+s+" "+j+" "+n+" "+r);
 		
 		initialize_processes(n);
 		initialize_frame_table();
@@ -54,7 +54,7 @@ public class Main {
 			//check if all processes are terminated
 			if(check_termination()==true)
 			{
-				System.out.println("----------");
+				//System.out.println("----------");
 				break;
 			}
 			int cnt=i%list.length;
@@ -77,10 +77,10 @@ public class Main {
 					else
 					{
 						list[cnt].faults++;
-						list[cnt].loaded_time=global_time;						
+						//list[cnt].loaded_time=global_time;						
 					}
 					list[cnt].next_ref_w=next_ref(curr_w,cnt);		
-					System.out.println((cnt+1)+" references word "+curr_w+" (page "+curr_ref_page+") "+"at time "+global_time+" , first call");
+					//System.out.println((cnt+1)+" references word "+curr_w+" (page "+curr_ref_page+") "+"at time "+global_time+" , first call");
 				}
 				else
 				{
@@ -94,8 +94,8 @@ public class Main {
 						{
 							use_free_frame(cnt+1,curr_ref_page);
 							list[cnt].faults++;
-							list[cnt].loaded_time=global_time;
-							System.out.println((cnt+1)+" references word "+curr_w+" (page "+curr_ref_page+") "+"at time "+global_time+" first call");
+							//list[cnt].loaded_time=global_time;
+							//System.out.println((cnt+1)+" references word "+curr_w+" (page "+curr_ref_page+") "+"at time "+global_time+" first call");
 						}
 						else
 						{
@@ -105,13 +105,13 @@ public class Main {
 							list[cnt].faults++;
 							list[cnt].residency_time=list[cnt].residency_time+(list[cnt].eviction_time-list[cnt].loaded_time);*/
 							obj.execute(cnt+1, curr_ref_page);
-							System.out.println((cnt+1)+" references word "+curr_w+" (page "+curr_ref_page+") "+"at time "+global_time+":"+" Fault, "+check_frame_table(cnt+1,curr_ref_page));
+							//System.out.println((cnt+1)+" references word "+curr_w+" (page "+curr_ref_page+") "+"at time "+global_time+":"+" Fault, "+check_frame_table(cnt+1,curr_ref_page));
 						}
 					}
 					else
 					{
 						frame_table[check_frame_table(cnt+1,curr_ref_page)].last_used=global_time;
-						System.out.println((cnt+1)+" references word "+curr_w+" (page "+curr_ref_page+") "+"at time "+global_time+":"+" Hit in frame ");
+						//System.out.println((cnt+1)+" references word "+curr_w+" (page "+curr_ref_page+") "+"at time "+global_time+":"+" Hit in frame ");
 					}
 					list[cnt].next_ref_w=next_ref(curr_w,cnt);
 					if(list[cnt].time==list[cnt].max_num_references)
@@ -133,7 +133,7 @@ public class Main {
 				tot_faults=tot_faults+list[i].faults;
 				tot_eviction=tot_eviction+list[i].evictions;
 				tot_residency=tot_residency+list[i].residency_time;
-				System.out.println(list[i].residency_time+" "+list[i].evictions);
+				//System.out.println(list[i].residency_time+" "+list[i].evictions);
 				System.out.println("Process "+(i+1)+" had "+(list[i].faults)+" faults and "+(double)list[i].residency_time/list[i].evictions+" average residency");
 			}
 			else
@@ -143,7 +143,7 @@ public class Main {
 			}
 				
 		}
-		
+		System.out.println();
 		System.out.println("The total number of faults is "+tot_faults+" and the overall average residency is "+(double)tot_residency/tot_eviction);
 
 
@@ -156,7 +156,7 @@ public class Main {
 			if(list[i].terminated==false)
 				return false;
 		}
-		System.out.println("----------");
+		//System.out.println("----------");
 		return true;
 	}
 	
@@ -169,6 +169,7 @@ public class Main {
 				frame_table[i].process_num=process;
 				frame_table[i].page=page;
 				frame_table[i].free=false;
+				frame_table[i].loaded_time=global_time;
 				return true;
 			}
 		}
@@ -228,7 +229,7 @@ public class Main {
 	{
 		int num=random_numbers[random_index];
 		random_index++;
-		System.out.println("Random: "+num);
+		//System.out.println("Random: "+num);
 		return num;
 	}
 
